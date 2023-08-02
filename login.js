@@ -51,7 +51,7 @@ function Login() {
         </div>
       ) : (
         <div className="col-6 mx-auto shadow-sm">
-          <h5 className="h-4 bg-light">Login Form</h5>
+          <h5 className="h-4 bg-light text-center shadow p-4">Login Form</h5>
           <form onSubmit={validateLogin}>
             <div className="form-group">
               <label htmlFor="email">Email address</label>
