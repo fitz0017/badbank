@@ -85,7 +85,7 @@ function CreateAccount() {
           </div>
         ) : (
           <>
-            <h5>Success</h5>
+            <h5 className="text-success text-center">Success</h5>
             <button type="submit" className="btn btn-light" onClick={clearForm}>
               Add another account
             </button>

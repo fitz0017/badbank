@@ -19,7 +19,7 @@ function Card(props) {
             {props.password && (
               <p className="card-text">Password: {props.password}</p>
             )}
-            {props.balance && <div id="balance">Balance: {props.balance}</div>}
+            {props.balance && <div id="balance">Balance: ${props.balance}</div>}
           </div>
         </div>
       )}

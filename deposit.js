@@ -12,10 +12,9 @@ const Deposit = () => {
   const validateDeposit = (dep) => {
     if (!dep) {
       return alert("No deposit submitted");
-    }
-    if (dep <= 0) return alert("Negative or zero deposit, try again");
+    } else if (dep <= 0) return alert("Negative or zero deposit, try again");
     // console.log(Number(dep));
-    if (isNaN(Number(dep))) return alert("Not a Number, try again");
+    else if (isNaN(Number(dep))) return alert("Not a Number, try again");
     else {
       return true;
     }
@@ -24,25 +23,25 @@ const Deposit = () => {
   // fix first submit adding zero to balance and second click doing what the first should
   const handleSubmit = (event) => {
     const temp = document.getElementById("deposit").value;
-    console.log(Number(temp));
-
     const newState = Number(temp) + balance;
-    validateDeposit(temp) && setBalance(newState);
-    console.log(newState);
-    console.log(temp);
-    if (newState < 0) {
-      return alert("Balance is negative");
-    }
+    console.log(Number(temp));
 
     // add to tx history
     if (validateDeposit(Number(temp))) {
       const node = document.createElement("li");
       const tx = document.createTextNode(
-        `Successful Deposit of ${Number(temp)}`
+        `Successful Deposit of $${Number(temp)}`
       );
       node.appendChild(tx);
       node.classList.add("text-success");
       document.getElementById("transactions").appendChild(node);
+
+      setBalance(newState);
+      console.log(newState);
+      console.log(temp);
+    }
+    if (newState < 0) {
+      return alert("Balance is negative");
     }
   };
 
@@ -63,7 +62,7 @@ const Deposit = () => {
             Deposit Form
           </h5>
           <div className="row mx-auto p-2">
-            <p className="card-text text-success">Balance: {balance}</p>
+            <p className="card-text text-success">Balance: ${balance}</p>
           </div>
           <div className="card-text">
             <form>

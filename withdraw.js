@@ -11,8 +11,8 @@ function Withdraw() {
   const validateWithdrawl = (num) => {
     if (!num) {
       return alert("No withdrawl submitted");
-    }
-    if (Number(num) <= 0) return alert("Negative or zero withdrawl, try again");
+    } else if (Number(num) <= 0)
+      return alert("Negative or zero withdrawl, try again");
     console.log(Number(num));
     if (isNaN(Number(num))) return alert("Not a Number, try again");
     else {
@@ -46,7 +46,7 @@ function Withdraw() {
         // add to tx history
         const node = document.createElement("li");
         const tx = document.createTextNode(
-          `Successful Withdrawl of ${Number(temp)}`
+          `Successful Withdrawl of $${Number(temp)}`
         );
         node.appendChild(tx);
         node.classList.add("text-success");
