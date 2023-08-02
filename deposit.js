@@ -1,36 +1,53 @@
 const Deposit = () => {
   const ctx = React.useContext(UserContext);
   const activeUser = React.useContext(ActiveUserContext);
-  const [deposit, setDeposit] = React.useState(null);
+  const [deposit, setDeposit] = React.useState(0);
   const currentUser = ctx.users.filter((user) => user.email === activeUser);
   const [balance, setBalance] = React.useState(Number(currentUser[0].balance));
   const [enable, setEnable] = React.useState(false);
 
   const [validTransaction, setValidTransaction] = React.useState(false);
 
+  // TODO validate zero dollar deposits don't process after alert
   const validateDeposit = (dep) => {
     if (!dep) {
       return alert("No deposit submitted");
     }
     if (dep <= 0) return alert("Negative or zero deposit, try again");
-    console.log(Number(dep));
+    // console.log(Number(dep));
     if (isNaN(Number(dep))) return alert("Not a Number, try again");
+    else {
+      return true;
+    }
   };
 
+  // fix first submit adding zero to balance and second click doing what the first should
   const handleSubmit = (event) => {
     const temp = document.getElementById("deposit").value;
-    validateDeposit(temp);
-    setDeposit(Number(temp));
-    const newState = deposit + balance;
-    if (newState < 0) return alert("Balance is negative");
-    setBalance(newState);
-    const node = document.createElement("li");
-    const tx = document.createTextNode(`Successful Deposit of ${deposit}`);
-    node.appendChild(tx);
-    document.getElementById("transactions").appendChild(node);
+    console.log(Number(temp));
+
+    const newState = Number(temp) + balance;
+    validateDeposit(temp) && setBalance(newState);
+    console.log(newState);
+    console.log(temp);
+    if (newState < 0) {
+      return alert("Balance is negative");
+    }
+
+    // add to tx history
+    if (validateDeposit(Number(temp))) {
+      const node = document.createElement("li");
+      const tx = document.createTextNode(
+        `Successful Deposit of ${Number(temp)}`
+      );
+      node.appendChild(tx);
+      node.classList.add("text-success");
+      document.getElementById("transactions").appendChild(node);
+    }
   };
 
   return (
+    // TODO finish styling cards, standarize shadows and header colors
     <>
       <div className="row">
         <div className="col-4 mx-auto">
@@ -42,23 +59,29 @@ const Deposit = () => {
           ></Card>
         </div>
         <div className="col-4 card p-4 mx-auto shadow-sm">
-          <h5 className="card-title bg-light text-center">Deposit Form</h5>
-          <div className="row text-center mx-auto p-2">
-            <p className="card-text">Balance: {balance}</p>
+          <h5 className="card-title bg-light text-center shadow p-4">
+            Deposit Form
+          </h5>
+          <div className="row mx-auto p-2">
+            <p className="card-text text-success">Balance: {balance}</p>
           </div>
           <div className="card-text">
-            <form onSubmit={handleSubmit}>
+            <form>
               <input
                 className="form-control"
                 type="text"
                 id="deposit"
-                placeholder="$0.00"
+                placeholder="$0"
                 onChange={(e) => {
                   setEnable(true);
                 }}
               ></input>
               {enable ? (
-                <button className="btn-primary m-2" type="submit">
+                <button
+                  className="btn-primary m-2"
+                  type="submit"
+                  onClick={handleSubmit}
+                >
                   Submit Deposit
                 </button>
               ) : (
@@ -73,8 +96,8 @@ const Deposit = () => {
 
       <div className="row">
         <div className="col-6 mx-auto">
-          <div className="card m-4 shadow-sm">
-            <h5 className="bg-light card-title text-center">
+          <div className="card m-4 p-4 shadow-sm">
+            <h5 className="bg-light card-title text-center shadow p-4">
               Transaction History
             </h5>
             <ul className="list" id="transactions"></ul>

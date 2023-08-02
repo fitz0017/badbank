@@ -40,7 +40,8 @@ function CreateAccount() {
       status={status}
       body={
         show ? (
-          <>
+          <div>
+            <h2 className="card-header">Create Account Form</h2>
             Name
             <br />
             <input
@@ -55,7 +56,7 @@ function CreateAccount() {
             Email address
             <br />
             <input
-              type="input"
+              type="email"
               className="form-control"
               id="email"
               placeholder="Enter email"
@@ -81,7 +82,7 @@ function CreateAccount() {
             >
               Create Account
             </button>
-          </>
+          </div>
         ) : (
           <>
             <h5>Success</h5>

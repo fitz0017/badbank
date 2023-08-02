@@ -36,14 +36,16 @@ function Login() {
 
     if (realUser[0].password === password) {
       setIsLoggedIn(true);
+    } else {
+      alert("Wrong password, try again");
     }
   }
   return (
     <div>
       {isLoggedIn ? (
-        <div className="card col-4 text-center bg-success mx-auto">
+        <div className="card col-4 text-center text-success mx-auto shadow">
           <h4 className="p-3">Successful Login!</h4>
-          <button className="btn-warning" onClick={logout}>
+          <button className="btn-danger m-3 p-2" onClick={logout}>
             Logout
           </button>
         </div>
