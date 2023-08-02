@@ -10,12 +10,12 @@ const Deposit = () => {
 
   // TODO validate zero dollar deposits don't process after alert
   const validateDeposit = (dep) => {
-    if (!dep) {
-      return alert("No deposit submitted");
-    } else if (dep <= 0) return alert("Negative or zero deposit, try again");
+    if (dep <= 0) return alert("Negative or zero deposit, try again");
     // console.log(Number(dep));
     else if (isNaN(Number(dep))) return alert("Not a Number, try again");
-    else {
+    else if (!dep) {
+      return alert("No deposit submitted");
+    } else {
       return true;
     }
   };
