@@ -1,41 +1,43 @@
-const ActiveUserContext = React.createContext("");
-
 function Login() {
   const ctx = React.useContext(UserContext);
+  const userCtx = React.useContext(ActiveUserContext);
   const [isLoggedIn, setIsLoggedIn] = React.useState(false);
   const [password, setPassword] = React.useState("");
-  const [formEmail, setFormEmail] = React.useState("");
+  const [email, setEmail] = React.useState("");
   const [enabled, setEnable] = React.useState(false);
 
   function updatePassword(e) {
     setPassword(e.target.value);
-    console.log(password);
+    // console.log(password);
     setEnable(true);
   }
 
   function updateEmail(e) {
-    setFormEmail(e.target.value);
-    console.log(formEmail);
+    setEmail(e.target.value);
+    // console.log(email);
   }
   function logout() {
     setIsLoggedIn(false);
   }
 
   function validateLogin(e) {
-    const email = document.getElementById("email").value;
-    const password = document.getElementById("password").value;
-    {
-      !password | !email ? setEnable(false) : setEnable(true);
-    }
+    // const email = document.getElementById("email").value;
+    // const password = document.getElementById("password").value;
+    // {
+    //   !password | !email ? setEnable(false) : setEnable(true);
+    // }
 
     console.log(email);
     console.log(password);
 
-    const realUser = ctx.users.filter((user) => user.email === email);
-    console.log(realUser[0].password);
+    const realUser = ctx.users.usersArray.filter(
+      (user) => user.email === email
+    );
+    console.log(realUser);
 
     if (realUser[0].password === password) {
       setIsLoggedIn(true);
+      userCtx.setUser(realUser);
     } else {
       alert("Wrong password, try again");
     }

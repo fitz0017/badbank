@@ -12,7 +12,7 @@ function Card(props) {
       ) : (
         <div>
           <h5 className="card-header card-title bg-light text-center shadow">
-            {props.name.toUpperCase()}
+            {props.email}
           </h5>
           <div className="card-body">
             {props.email && <p className="card-text">Email: {props.email}</p>}

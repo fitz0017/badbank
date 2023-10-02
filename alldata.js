@@ -24,7 +24,7 @@ function AllData() {
           </div>
         </div>
       ))} */}
-        {ctx.users.map((user, index) => (
+        {ctx.users.usersArray.map((user, index) => (
           <Card
             txtcolor="dark"
             key={index}

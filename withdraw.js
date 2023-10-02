@@ -1,93 +1,90 @@
-function Withdraw() {
+const Withdraw = () => {
   const ctx = React.useContext(UserContext);
-  const activeUser = React.useContext(ActiveUserContext);
-  const [withdrawl, setWithdrawl] = React.useState(0);
-  const currentUser = ctx.users.filter((user) => user.email === activeUser);
-  const [balance, setBalance] = React.useState(Number(currentUser[0].balance));
+  const userCtx = React.useContext(ActiveUserContext);
+  const [withdraw, setWithdrawl] = React.useState(0);
+  const [balance, setBalance] = React.useState(100);
   const [enable, setEnable] = React.useState(false);
 
   const [validTransaction, setValidTransaction] = React.useState(false);
 
-  const validateWithdrawl = (num) => {
-    if (!num) {
-      return alert("No withdrawl submitted");
-    } else if (Number(num) <= 0)
-      return alert("Negative or zero withdrawl, try again");
-    console.log(Number(num));
-    if (isNaN(Number(num))) return alert("Not a Number, try again");
-    else {
+  // TODO validate zero dollar deposits don't process after alert
+  const validateWithdrawl = (dep) => {
+    if (dep <= 0) return alert("Negative or zero deposit, try again");
+    // console.log(Number(dep));
+    else if (isNaN(Number(dep))) return alert("Not a Number, try again");
+    else if (!dep) {
+      return alert("No deposit submitted");
+    } else {
       return true;
     }
   };
+  console.log(userCtx.user[0]);
 
+  // fix first submit adding zero to balance and second click doing what the first should
   const handleSubmit = (event) => {
     const temp = document.getElementById("withdrawl").value;
-    if (!validateWithdrawl(temp)) {
-      return;
-    } else {
-      setWithdrawl(Number(temp));
-      const newState = balance - Number(temp);
-      setBalance(newState);
+    const newState = userCtx.user[0].balance - Number(temp);
+    console.log(newState);
+    let tempUser = userCtx.user[0];
+    tempUser.balance = newState;
+    console.log(userCtx.user[0].name);
 
-      // Show negative balance in tx history
-      if (newState < 0) {
-        const node = document.createElement("li");
-        const tx = document.createTextNode(
-          `Balance overdrawn by $${Number(temp)} withdrawl`
-        );
-        node.appendChild(tx);
-        node.classList.add("text-danger");
-        document.getElementById("transactions").appendChild(node);
-        document
-          .getElementById("form-balance")
-          .classList.replace("text-success", "text-danger");
-        return;
-      } else {
-        // add to tx history
-        const node = document.createElement("li");
-        const tx = document.createTextNode(
-          `Successful Withdrawl of $${Number(temp)}`
-        );
-        node.appendChild(tx);
-        node.classList.add("text-success");
-        document.getElementById("transactions").appendChild(node);
-      }
+    // add to tx history
+    if (validateWithdrawl(Number(temp))) {
+      const node = document.createElement("li");
+      const tx = document.createTextNode(
+        `Successful Withdrawl of $${Number(temp)}`
+      );
+      node.appendChild(tx);
+      node.classList.add("text-success");
+      document.getElementById("transactions").appendChild(node);
+
+      console.log(userCtx.user[0]);
+    }
+    if (newState < 0) {
+      return alert("Balance is negative");
     }
   };
 
   return (
+    // TODO finish styling cards, standarize shadows and header colors
+
     <>
       <div className="row">
         <div className="col-4 mx-auto">
           <Card
             txtcolor="dark"
-            name={currentUser[0].name}
-            email={currentUser[0].email}
-            balance={balance}
+            name={userCtx.user[0].name}
+            email={userCtx.user[0].email}
+            balance={userCtx.user[0].balance}
           ></Card>
         </div>
         <div className="col-4 card p-4 mx-auto shadow-sm">
           <h5 className="card-title bg-light text-center shadow p-4">
-            Withdrawl Form
+            Deposit Form
           </h5>
-          <div className="row mx-auto">
-            <p id="form-balance" className="card-text text-center text-success">
-              Balance: ${balance}
+          <div className="row mx-auto p-2">
+            <p className="card-text text-success">
+              Balance: ${userCtx.user[0].balance}
             </p>
           </div>
-          <div className="row text-center mx-auto p-2">
-            <form onSubmit={handleSubmit}>
+          <div className="card-text">
+            <form>
               <input
                 className="form-control"
-                type="number"
+                type="text"
                 id="withdrawl"
-                placeholder="$0.00"
+                placeholder="$0"
                 onChange={(e) => {
                   setEnable(true);
                 }}
               ></input>
               {enable ? (
-                <button className="btn-primary m-2" type="submit">
+                <button
+                  className="btn-primary m-2"
+                  type="submit"
+                  onClick={handleSubmit}
+                >
                   Submit Withdrawl
                 </button>
               ) : (
@@ -99,6 +96,7 @@ function Withdraw() {
           </div>
         </div>
       </div>
+
       <div className="row">
         <div className="col-6 mx-auto">
           <div className="card m-4 p-4 shadow-sm">
@@ -111,4 +109,4 @@ function Withdraw() {
       </div>
     </>
   );
-}
+};

@@ -1,9 +1,8 @@
 const Deposit = () => {
   const ctx = React.useContext(UserContext);
-  const activeUser = React.useContext(ActiveUserContext);
+  const userCtx = React.useContext(ActiveUserContext);
   const [deposit, setDeposit] = React.useState(0);
-  const currentUser = ctx.users.filter((user) => user.email === activeUser);
-  const [balance, setBalance] = React.useState(Number(currentUser[0].balance));
+  const [balance, setBalance] = React.useState(100);
   const [enable, setEnable] = React.useState(false);
 
   const [validTransaction, setValidTransaction] = React.useState(false);
@@ -25,7 +24,12 @@ const Deposit = () => {
     const temp = document.getElementById("deposit").value;
     const newState = Number(temp) + balance;
     console.log(Number(temp));
+    let user = ctx.users.usersArray[0];
 
+    user.balance = newState;
+    ctx.setUsers({ usersArray: [...ctx.users.usersArray, user] });
+    console.log(user);
+    console.log(ctx.usersArray);
     // add to tx history
     if (validateDeposit(Number(temp))) {
       const node = document.createElement("li");
@@ -36,8 +40,7 @@ const Deposit = () => {
       node.classList.add("text-success");
       document.getElementById("transactions").appendChild(node);
 
-      setBalance(newState);
-      console.log(newState);
+      console.log(ctx.users);
       console.log(temp);
     }
     if (newState < 0) {
@@ -52,9 +55,9 @@ const Deposit = () => {
         <div className="col-4 mx-auto">
           <Card
             txtcolor="dark"
-            name={currentUser[0].name}
-            email={currentUser[0].email}
-            balance={balance}
+            name={userCtx.user[0].name}
+            email={userCtx.user[0].email}
+            balance={userCtx.user[0].balance}
           ></Card>
         </div>
         <div className="col-4 card p-4 mx-auto shadow-sm">
@@ -62,7 +65,9 @@ const Deposit = () => {
             Deposit Form
           </h5>
           <div className="row mx-auto p-2">
-            <p className="card-text text-success">Balance: ${balance}</p>
+            <p className="card-text text-success">
+              Balance: ${userCtx.user[0].balance}
+            </p>
           </div>
           <div className="card-text">
             <form>
