@@ -1,12 +1,17 @@
 # Demo Bank
 
-# Demo Bank -
-
 is a MERN stack application demonstrating basic consumer banking functionality. A user will be able to login, deposit, withdraw funds from their starting balance (100).
 
 # Installation Guidelines:
 
 This application will be deployable in Google Cloud using Cloud Run and Firebase.
+
+- To run locally:
+  - pull the repo down
+  - docker build -t demobank .
+  - docker run -p 8080:8080 demobank
+
+Will be configured to run against a cloud MongoDB Atlas instance, update config.js to run against a local Mongo container
 
 # Screenshots:
 
@@ -27,4 +32,6 @@ Currently, only basic functionality is displayed for a standing bank account use
 
 Future features could include an analytics dashboard for each user to see how they are tracking on their monthly spending vs funds. It is also only a single bank account type so far. A future feature could be a savings account accruing interest paid monthly and added to a user's balance.
 
-# License: MIT License
+# License:
+
+MIT License
